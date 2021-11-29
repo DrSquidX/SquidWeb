@@ -236,7 +236,6 @@ Welcome to this website.
             query_strs = self.obtain_query_str(subdomain)
             code_and_response = self.response_to_send(subdomain, actual_ip, query_strs)
             code = code_and_response[1]
-            print(code_and_response)
             conn.send(f'HTTP/1.0 {code}\n'.encode())
             conn.send('Content-Type: text/html\n'.encode())
             conn.send("\n".encode())
