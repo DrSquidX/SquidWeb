@@ -10,12 +10,12 @@ except:
 class Website:
     def logo(self):
         return """
-  _________            .__    ._____      __      ___.           ________     _______   
- /   _____/ ________ __|__| __| _/  \    /  \ ____\_ |__   ___  _\_____  \    \   _  \  
- \_____  \ / ____/  |  \  |/ __ |\   \/\/   // __ \| __ \  \  \/ //  ____/    /  /_\  \ 
- /        < <_|  |  |  /  / /_/ | \        /\  ___/| \_\ \  \   //       \    \  \_/   \\
-/_______  /\__   |____/|__\____ |  \__/\  /  \___  >___  /   \_/ \_______ \ /\ \_____  /
-        \/    |__|             \/       \/       \/    \/                \/ \/       \/ 
+  _________            .__    ._____      __      ___.           ________       .________
+ /   _____/ ________ __|__| __| _/  \    /  \ ____\_ |__   ___  _\_____  \      |   ____/
+ \_____  \ / ____/  |  \  |/ __ |\   \/\/   // __ \| __ \  \  \/ //  ____/      |____  \ 
+ /        < <_|  |  |  /  / /_/ | \        /\  ___/| \_\ \  \   //       \      /       \\
+/_______  /\__   |____/|__\____ |  \__/\  /  \___  >___  /   \_/ \_______ \ /\ /______  /
+        \/    |__|             \/       \/       \/    \/                \/ \/        \/ 
 Web-Server API by DrSquid"""
     def __init__(self, IP, Port, external_ip=None, external_port=None):
         self.ip = IP
@@ -158,15 +158,17 @@ Welcome to this website.
         del domain[0]
         new_domain = ""
         for i in domain:
-            new_domain += f"/{i}"
+            if "?" not in i:
+                new_domain += f"/{i}"
         return  new_domain
     def response_to_send(self, subdomain, ip, query_str):
         code = "200 OK"
         found = False
         redirect_to_real_web = False
         webdomain = ""
+        subdomain = self.return_real_subdomain(subdomain)
         for i in self.subdomains:
-            if self.return_real_subdomain(subdomain) == i[0]:
+            if subdomain == i[0]:
                 found = True
                 file = open(i[1],"rb")
                 content = file.read()
@@ -234,6 +236,7 @@ Welcome to this website.
             query_strs = self.obtain_query_str(subdomain)
             code_and_response = self.response_to_send(subdomain, actual_ip, query_strs)
             code = code_and_response[1]
+            print(code_and_response)
             conn.send(f'HTTP/1.0 {code}\n'.encode())
             conn.send('Content-Type: text/html\n'.encode())
             conn.send("\n".encode())
