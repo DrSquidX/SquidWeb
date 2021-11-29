@@ -95,7 +95,7 @@ Welcome to this website.
         self.server.bind((self.ip, self.port))
         self.listen()
     def listen(self):
-        self.log(f"[+] Server is listening on {self.ip}:{self.port}.")
+        self.log(f"Server is listening on {self.ip}:{self.port}.")
         while True:
             try:
                 self.server.listen()
